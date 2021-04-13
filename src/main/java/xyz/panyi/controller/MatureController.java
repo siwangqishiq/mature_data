@@ -35,6 +35,8 @@ public class MatureController {
             int val = random.nextInt(limit);
             set.add(new Integer(val));
         }//end while
+
+        logger.info("set:"+set.toString());
         for(int val : set){
             list.add(matureList.get(val));
         }

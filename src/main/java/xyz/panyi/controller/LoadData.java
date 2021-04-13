@@ -48,7 +48,7 @@ public class LoadData implements CommandLineRunner {
             throws IOException {
         StringBuilder resultStringBuilder = new StringBuilder();
         try (BufferedReader br
-                     = new BufferedReader(new InputStreamReader(inputStream))) {
+                     = new BufferedReader(new InputStreamReader(inputStream , "UTF-8"))) {
             String line;
             while ((line = br.readLine()) != null) {
                 resultStringBuilder.append(line).append("\n");
