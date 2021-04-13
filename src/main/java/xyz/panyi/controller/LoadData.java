@@ -6,10 +6,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.ResourceUtils;
 import xyz.panyi.model.Mature;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.Scanner;
 
 @Component
@@ -24,7 +21,7 @@ public class LoadData implements CommandLineRunner {
         InputStreamReader reader = null;
         try {
             File jsonFile = ResourceUtils.getFile("classpath:list.json");
-            String content = new Scanner(jsonFile).useDelimiter("\\Z").next();
+            String content = readFromInputStream(new FileInputStream(jsonFile));
             //System.out.println("content = " + content);
             MatureController.matureList = JSONArray.parseArray(content, Mature.class);
         } catch (FileNotFoundException e) {
@@ -45,5 +42,18 @@ public class LoadData implements CommandLineRunner {
         System.out.println("导入数据耗时 = " + (t2 - t1));
 
         System.out.println("数据总量 = " + MatureController.matureList.size());
+    }
+
+    private String readFromInputStream(InputStream inputStream)
+            throws IOException {
+        StringBuilder resultStringBuilder = new StringBuilder();
+        try (BufferedReader br
+                     = new BufferedReader(new InputStreamReader(inputStream))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                resultStringBuilder.append(line).append("\n");
+            }
+        }
+        return resultStringBuilder.toString();
     }
 }
